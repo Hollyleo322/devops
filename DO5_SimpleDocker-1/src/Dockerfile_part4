@@ -1,0 +1,11 @@
+FROM nginx:stable-perl
+
+RUN apt-get update && apt-get install gcc -y && apt-get install libfcgi-dev -y && apt-get install spawn-fcgi -y
+COPY /server/fcgi.c /home/fcgi.c
+COPY /server/nginx/nginx.conf /etc/nginx/
+COPY /server/start.sh /home 
+
+WORKDIR /home
+
+ENTRYPOINT [ "/bin/bash", "start.sh" ]
+
