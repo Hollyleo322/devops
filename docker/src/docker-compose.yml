@@ -1,0 +1,20 @@
+services:
+  nginx_part5:
+    container_name: p5
+    image: p5:21
+    volumes:
+      - ./server/nginx:/etc/nginx
+    networks:
+      - school21
+  nginx_default:
+    container_name: default
+    image: nginx:latest
+    volumes:
+      - ./part6/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:8080
+    networks:
+      - school21
+networks:
+  school21:
+    driver: bridge

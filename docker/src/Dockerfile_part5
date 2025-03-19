@@ -1,0 +1,12 @@
+FROM ubuntu/nginx:latest
+COPY /server/fcgi.c /home/fcgi.c
+COPY /part5/start.sh /home 
+
+RUN apt-get update && apt-get install -y gcc libfcgi-dev spawn-fcgi && rm -rf /var/lib/apt/lists && useradd -s /bin/bash zinur && gcc -Wall -Wextra -Werror -o /home/fcgi_server /home/fcgi.c -lfcgi && chmod a+rwx /usr/sbin/nginx /run/ /var/lib/nginx/ /var/log/nginx/*.log
+COPY /server/nginx/nginx.conf /etc/nginx/
+RUN chmod a+rwx /etc/nginx/nginx.conf
+USER zinur
+WORKDIR /home
+
+ENTRYPOINT [ "/bin/bash", "start.sh" ]
+
